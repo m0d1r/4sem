@@ -42,15 +42,8 @@ function perimetr(...cords) {
     }
     result = 0;
     for (i = 0; i+2 < cords.length; i += 2){
-        x1 = cords[i];
-        y1 = cords[i+1];
-        x2 = cords[i+2];
-        y2 = cords[i+3];
-        console.log(x1, x2, y1, y2);
-        result += Math.hypot(x2 - x1,y2 - y1)
-        console.log(result);
+        result += Math.hypot(cords[i+2] - cords[i],cords[i+3] - cords[i+1])
     }
-    console.log(cords[0], cords[1], cords[cords.length-2], cords[cords.length-1]);
     result += Math.hypot(cords[0], cords[1], cords[cords.length-2], cords[cords.length-1]);
     return result;
 }
