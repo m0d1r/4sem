@@ -1,5 +1,5 @@
 function createAsyncFunction(fn, delay) {
-    return function(value) {
+    return function (value) {
         return new Promise((resolve) => {
             setTimeout(() => {
                 resolve(fn(value));

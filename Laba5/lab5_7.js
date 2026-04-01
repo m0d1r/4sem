@@ -13,15 +13,15 @@ async function interviewTask(candidate, taskNumber, prepTime, defenseTime) {
 async function interviews(candidates) {
     const promises = candidates.map(async (candidate) => {
         const [name, prep1, defense1, prep2, defense2] = candidate;
-        
+
         await interviewTask(name, 1, prep1, defense1);
-        
+
         console.log(name + " is resting.");
         await delay(500);
-        
+
         await interviewTask(name, 2, prep2, defense2);
     });
-    
+
     await Promise.all(promises);
 }
 

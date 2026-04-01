@@ -4,7 +4,7 @@ function createAsyncAdder(secondNumber) {
     let firstCall = true;
     let intervalId = null;
 
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         function add() {
             if (count >= 5) {
                 clearInterval(intervalId);
@@ -44,17 +44,17 @@ function createAsyncAdder(secondNumber) {
 }
 
 createAsyncAdder(5)
-    .then(function(finalResult) {
+    .then(function (finalResult) {
         console.log("Готово: " + finalResult);
     })
-    .catch(function(error) {
+    .catch(function (error) {
         console.log(error);
     });
 
 createAsyncAdder("abc")
-    .then(function(finalResult) {
+    .then(function (finalResult) {
         console.log("Готово: " + finalResult);
     })
-    .catch(function(error) {
+    .catch(function (error) {
         console.log(error);
     });
