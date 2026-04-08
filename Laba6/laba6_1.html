@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <div>
+        <h3>a)</h3>
+        <button onclick="taskA()">Вычислить sin(x)</button>
+    </div>
+    <div>
+        <h3>b)</h3>
+        <button onclick="taskB()">Проверить принадлежность точки квадрату</button>
+    </div>
+    <div>
+        <h3>c)</h3>
+        <button onclick="taskC()">Проверить представление в виде суммы двух квадратов</button>
+    </div>
+    <div>
+        <h3>d)</h3>
+        <button onclick="taskD()">Проверить email на наличие @</button>
+    </div>
+    <div>
+        <h3>e)</h3>
+        <button onclick="taskE()">Вычислить долю латинских букв</button>
+    </div>
+    <div>
+        <h3>f)</h3>
+        <button onclick="taskF()">Удалить повторные слова</button>
+    </div>
+    <div>
+        <h3>g)</h3>
+        <button onclick="taskG()">Сгенерировать массив и вывести в обратном порядке по 5 чисел</button>
+    </div>
+    <div>
+        <h3>h)</h3>
+        <button onclick="taskH()">Преобразовать матрицу (обнулить диагонали, кроме максимума и минимума)</button>
+    </div>
+    <div>
+        <h3>i)</h3>
+        <button onclick="taskI()">Прибавить n дней к текущей дате</button>
+    </div>
+    <div>
+        <h3>j)</h3>
+        <button onclick="taskJ()">Сколько месяцев до 1 сентября</button>
+    </div>
+
+    <script>
+        function taskA() {
+            let x = parseFloat(prompt("x:"));
+            if (isNaN(x)) alert("Ошибка");
+            else alert(Math.sin(x));
+        }
+
+        function taskB() {
+            let x1 = +prompt("x1:"), y1 = +prompt("y1:");
+            let x2 = +prompt("x2:"), y2 = +prompt("y2:");
+            let px = +prompt("x:"), py = +prompt("y:");
+            if (isNaN(x1 + y1 + x2 + y2 + px + py)) alert("Ошибка");
+            else {
+                let left = Math.min(x1, x2), right = Math.max(x1, x2);
+                let bottom = Math.min(y1, y2), top = Math.max(y1, y2);
+                alert((px >= left && px <= right && py >= bottom && py <= top) ? "Да" : "Нет");
+            }
+        }
+
+        function taskC() {
+            let n = parseInt(prompt("n:"));
+            if (isNaN(n) || n < 1) alert("Ошибка");
+            else {
+                let ok = false;
+                for (let a = 1; a * a <= n; a++) {
+                    let b = Math.sqrt(n - a * a);
+                    if (Number.isInteger(b) && b >= 1) { ok = true; break; }
+                }
+                alert(ok ? "Да" : "Нет");
+            }
+        }
+
+        function taskD() {
+            let email = prompt("email:");
+            if (email === null) return;
+            alert(email.includes('@') ? "Есть @" : "Нет @");
+        }
+
+        function taskE() {
+            let s = prompt("s:") || "";
+            let cnt = 0;
+            for (let ch of s) if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z')) cnt++;
+            let p = s.length ? (cnt / s.length * 100).toFixed(2) : 0;
+            alert(p + "%");
+        }
+
+        function taskF() {
+            let s = prompt("s:") || "";
+            let words = s.trim().split(/\s+/);
+            if (words.length === 1 && words[0] === "") alert("");
+            else {
+                let seen = new Set();
+                let uniq = [];
+                for (let w of words) if (!seen.has(w)) { seen.add(w); uniq.push(w); }
+                alert(uniq.join(" "));
+            }
+        }
+
+        function taskG() {
+            let n = parseInt(prompt("n:"));
+            if (isNaN(n) || n <= 0) alert("Ошибка");
+            else {
+                let arr = Array.from({ length: n }, () => Math.floor(Math.random() * 100));
+                let rev = [...arr].reverse();
+                let out = "";
+                for (let i = 0; i < rev.length; i += 5) out += rev.slice(i, i + 5).join(" ") + "\n";
+                alert(out.trim());
+            }
+        }
+
+        function taskH() {
+            let n = parseInt(prompt("n:"));
+            if (isNaN(n) || n < 1) alert("Ошибка");
+            else {
+                let m = Array(n).fill().map(() => Array(n).fill(0));
+                for (let i = 0; i < n; i++)
+                    for (let j = 0; j < n; j++)
+                        m[i][j] = +(Math.random() * 100).toFixed(2);
+                let diag = [];
+                for (let i = 0; i < n; i++) {
+                    diag.push(m[i][i]);
+                    if (i !== n - 1 - i) diag.push(m[i][n - 1 - i]);
+                }
+                let maxD = Math.max(...diag), minD = Math.min(...diag);
+                let res = m.map(row => [...row]);
+                for (let i = 0; i < n; i++) {
+                    if (res[i][i] !== maxD && res[i][i] !== minD) res[i][i] = 0;
+                    let j = n - 1 - i;
+                    if (res[i][j] !== maxD && res[i][j] !== minD) res[i][j] = 0;
+                }
+                alert(res.map(row => row.map(v => v.toFixed(2)).join(" ")).join("\n"));
+            }
+        }
+
+        function taskI() {
+            let n = parseInt(prompt("n:"));
+            if (isNaN(n)) alert("Ошибка");
+            else {
+                let d = new Date();
+                d.setDate(d.getDate() + n);
+                alert(d.toLocaleDateString());
+            }
+        }
+
+        function taskJ() {
+            let now = new Date();
+            let y = now.getFullYear();
+            let sep = new Date(y, 8, 1);
+            if (now > sep) sep = new Date(y + 1, 8, 1);
+            let months = (sep.getFullYear() - now.getFullYear()) * 12 + (sep.getMonth() - now.getMonth());
+            alert(months);
+        }
+    </script>
+</body>
+
+</html>
