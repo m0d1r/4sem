@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Получение элементов</title>
+</head>
+
+<body>
+
+    <form name="search">
+        <label>Search the site:
+            <input type="text" name="search">
+        </label>
+        <input type="submit" value="Search!">
+    </form>
+
+    <hr>
+
+    <form name="search-person">
+        Search the visitors:
+        <table id="age-table">
+            <tbody>
+                <tr>
+                    <td>Age:</td>
+                    <td id="age-list">
+                        <label><input type="radio" name="age" value="young">less than 18</label>
+                        <label><input type="radio" name="age" value="mature">18-50</label>
+                        <label><input type="radio" name="age" value="senior">more than 50</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Additionally:</td>
+                    <td>
+                        <input type="text" name="info[0]">
+                        <input type="text" name="info[1]">
+                        <input type="text" name="info[2]">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="submit" value="Search!">
+    </form>
+
+    <div id="results"></div>
+
+    <script>
+        let ageTable = document.getElementById('age-table');
+        let labels = ageTable.querySelectorAll('label');
+        let firstTd = ageTable.querySelector('td');
+        let searchForm = document.forms.search;
+        let firstInput = searchForm.querySelector('input');
+        let allInputs = searchForm.querySelectorAll('input');
+        let lastInput = allInputs[allInputs.length - 1];
+
+        let out = document.getElementById('results');
+        out.innerHTML = `
+        <p>Таблица age-table: ${ageTable ? 'найдена' : 'не найдена'}</p>
+        <p>Количество label внутри таблицы: ${labels.length}</p>
+        <p>Первый td (текст): ${firstTd ? firstTd.textContent : 'нет'}</p>
+        <p>Форма с именем search: ${searchForm ? 'найдена' : 'не найдена'}</p>
+        <p>Первый input в этой форме (name): ${firstInput ? firstInput.getAttribute('name') : 'нет'}</p>
+        <p>Последний input в этой форме (value): ${lastInput ? lastInput.getAttribute('value') : 'нет'}</p>
+    `;
+        console.log('Таблица:', ageTable);
+        console.log('Все label:', labels);
+        console.log('Первый td:', firstTd);
+        console.log('Форма search:', searchForm);
+        console.log('Первый input:', firstInput);
+        console.log('Последний input:', lastInput);
+    </script>
+
+</body>
+
+</html>

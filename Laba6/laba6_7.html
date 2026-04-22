@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <ol id="list">
+        <li>Привет</li>
+        <li>Мир</li>
+    </ol>
+    <button onclick="clearList()">Очистить список</button>
+    <script>
+        function clear(elem) {
+            elem.innerHTML = '';
+        }
+        function clearList() {
+            let list = document.getElementById('list');
+            clear(list);
+        }
+    </script>
+</body>
+
+</html>

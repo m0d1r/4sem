@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Лицемер (с)</title>
+</head>
+
+<body>
+    <script>
+        const firstNames = ['Райан', 'Рома', 'Так-себе', 'И'];
+        const lastNames = ['Гослинг', 'Жёлудь', 'Шутник', 'Другие'];
+
+        function randomName() {
+            const f = firstNames[Math.floor(Math.random() * firstNames.length)];
+            const l = lastNames[Math.floor(Math.random() * lastNames.length)];
+            return f + ' ' + l;
+        }
+
+        function buildLayout() {
+            const header = document.createElement('header');
+            document.body.appendChild(header);
+
+            const main = document.createElement('main');
+            main.className = 'content';
+            document.body.appendChild(main);
+
+            const aside = document.createElement('aside');
+            main.appendChild(aside);
+
+            const section = document.createElement('section');
+            main.appendChild(section);
+
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'header-d';
+            headerDiv.textContent = 'Выберите лицо, которое нравится вам больше остальных:';
+            section.appendChild(headerDiv);
+
+            const display = document.createElement('div');
+            display.className = 'display';
+            display.id = 'card-container';
+            section.appendChild(display);
+
+            return display;
+        }
+
+        const container = buildLayout();
+        let cardCount = 0;
+        const MAX = 6;
+        let timer = null;
+
+        function createCard(index) {
+            const card = document.createElement('div');
+            card.className = 'card';
+
+            const img = document.createElement('img');
+            img.src = 'https://thispersondoesnotexist.com/?' + index;
+            img.alt = 'Avatar';
+
+            const desc = document.createElement('div');
+            desc.className = 'description';
+            const p = document.createElement('p');
+            p.textContent = randomName();
+            desc.appendChild(p);
+
+            card.appendChild(img);
+            card.appendChild(desc);
+            return card;
+        }
+
+        function addCard() {
+            if (cardCount >= MAX) {
+                if (timer) clearInterval(timer);
+                return;
+            }
+            cardCount++;
+            const newCard = createCard(cardCount);
+            container.appendChild(newCard);
+        }
+
+        timer = setInterval(addCard, 2000);
+        addCard();
+    </script>
+</body>
+
+</html>

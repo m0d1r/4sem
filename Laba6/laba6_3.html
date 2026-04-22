@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Получение элементов</title>
+</head>
+
+<body>
+    <div>Пользователи:</div>
+    <ul>
+        <li>Джон</li>
+        <li>Пит</li>
+    </ul>
+
+    <div id="results"></div>
+
+    <script>
+        let divElement = document.querySelector('div');
+        let ulElement = document.querySelector('ul');
+        let secondLi = document.querySelectorAll('li')[1];
+
+        let output = document.getElementById('results');
+        output.innerHTML = `
+            <p>Элемент div: ${divElement ? divElement.textContent : 'не найден'}</p>
+            <p>Элемент ul: ${ulElement ? 'найден, внутри ' + ulElement.children.length + ' li' : 'не найден'}</p>
+            <p>Второй li (текст): ${secondLi ? secondLi.textContent : 'не найден'}</p>
+        `;
+        console.log('div:', divElement);
+        console.log('ul:', ulElement);
+        console.log('второй li:', secondLi);
+    </script>
+</body>
+
+</html>

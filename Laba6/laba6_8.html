@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Создание списка</title>
+</head>
+
+<body>
+    <ul id="dynamic-list"></ul>
+    <script>
+        let count = parseInt(prompt('Количество пунктов:'), 10);
+        if (!isNaN(count) && count > 0) {
+            let list = document.getElementById('dynamic-list');
+            for (let i = 0; i < count; i++) {
+                let content = prompt(`Содержимое пункта ${i + 1}:`);
+                if (content !== null) {
+                    let li = document.createElement('li');
+                    li.textContent = content;
+                    list.appendChild(li);
+                }
+            }
+        } else {
+            alert('Некорректное количество');
+        }
+    </script>
+</body>
+
+</html>
