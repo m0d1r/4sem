@@ -3,37 +3,48 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Иванов Иван</title>
+    <title>Горизонтальная линия</title>
 </head>
 
 <body>
-    <h3>Горизонтальные линии</h3>
     <p>Выберите значения параметров, которые требуется изменить, и нажмите кнопку Выполнить.</p>
-    <form>
-        <label>Ширина (px): <input type="number" id="width" value="400" step="10"></label><br>
-        <label>Выравнивание:
-            <select id="align">
-                <option value="left">Влево</option>
-                <option value="center" selected>По центру</option>
-                <option value="right">Вправо</option>
-            </select>
-        </label><br>
-        <label>Цвет: <input type="color" id="color" value="#000000"></label><br>
-        <button type="button" onclick="applyStyles()">Выполнить</button>
-    </form>
-    <hr id="demoHr" style="height: 5px; background-color: black; border: none; width: 400px; margin: 20px auto;">
+    <div>
+        <div><label>Ширина (px):</label> <input type="number" id="width" value="400" step="10"></div>
+        <div><label>Толщина (px):</label> <input type="number" id="height" value="5" step="1"></div>
+        <div>
+            <label>Выравнивание:</label>
+            <label><input type="radio" name="align" value="left"> Влево</label>
+            <label><input type="radio" name="align" value="center" checked> По центру</label>
+            <label><input type="radio" name="align" value="right"> Вправо</label>
+        </div>
+        <div><label>Цвет:</label> <input type="color" id="color" value="#000000"></div>
+        <div><button type="button" id="applyBtn">Выполнить</button></div>
+    </div>
+    <hr id="demoHr">
     <script>
-        function applyStyles() {
-            let hr = document.getElementById('demoHr');
-            let w = document.getElementById('width').value;
-            let align = document.getElementById('align').value;
-            let col = document.getElementById('color').value;
-            hr.style.width = w + 'px';
-            hr.style.backgroundColor = col;
-            if (align === 'left') hr.style.margin = '20px 0';
-            else if (align === 'center') hr.style.margin = '20px auto';
-            else if (align === 'right') hr.style.margin = '20px 0 20px auto';
+        const hr = document.getElementById('demoHr');
+        const widthInp = document.getElementById('width');
+        const heightInp = document.getElementById('height');
+        const alignRadios = document.querySelectorAll('input[name="align"]');
+        const colorInp = document.getElementById('color');
+        const btn = document.getElementById('applyBtn');
+
+        function getAlign() {
+            for (let r of alignRadios) if (r.checked) return r.value;
+            return 'center';
         }
+
+        function apply() {
+            hr.style.width = widthInp.value + 'px';
+            hr.style.height = heightInp.value + 'px';
+            hr.style.backgroundColor = colorInp.value;
+            const a = getAlign();
+            if (a === 'left') hr.style.margin = '20px 0';
+            else if (a === 'center') hr.style.margin = '20px auto';
+            else hr.style.margin = '20px 0 20px auto';
+        }
+        btn.onclick = apply;
+        apply();
     </script>
 </body>
 
