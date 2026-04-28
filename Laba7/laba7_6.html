@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Иванов Иван</title>
+</head>
+
+<body>
+    <form>
+        <p>Введите начисленную зарплату за следующие месяцы</p>
+        <label>Январь: <input type="text" id="jan" value="300"></label><br>
+        <label>Февраль: <input type="text" id="feb" value="200"></label><br>
+        <label>Март: <input type="text" id="mar" value="500"></label><br>
+        <label>Апрель: <input type="text" id="apr" value="250"></label><br>
+        <label>Май: <input type="text" id="may" value="350"></label><br>
+        <label>Июнь: <input type="text" id="jun" value="500"></label><br>
+        <label>Средняя зарплата: <input type="text" id="avg" readonly></label><br>
+        <button type="button" onclick="compute()">Вычислить</button>
+    </form>
+    <script>
+        function compute() {
+            let jan = parseFloat(document.getElementById('jan').value) || 0;
+            let feb = parseFloat(document.getElementById('feb').value) || 0;
+            let mar = parseFloat(document.getElementById('mar').value) || 0;
+            let apr = parseFloat(document.getElementById('apr').value) || 0;
+            let may = parseFloat(document.getElementById('may').value) || 0;
+            let jun = parseFloat(document.getElementById('jun').value) || 0;
+            let avg = (jan + feb + mar + apr + may + jun) / 6;
+            document.getElementById('avg').value = avg;
+        }
+    </script>
+</body>
+
+</html>

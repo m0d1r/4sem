@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация в Сервис</title>
+    <style>
+        body {
+            background: white;
+            color: black;
+            font-family: sans-serif;
+            margin: 20px;
+        }
+
+        #loader {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .loader-bar {
+            width: 300px;
+            height: 20px;
+            background-color: #eee;
+            border: 1px solid #ccc;
+            margin: 20px auto;
+        }
+
+        .loader-fill {
+            width: 0%;
+            height: 100%;
+            background-color: #9b59b6;
+        }
+
+        .invisible {
+            display: none;
+        }
+
+        .progress {
+            width: 100%;
+            background-color: #f0f0f0;
+            margin: 15px 0;
+            height: 10px;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background-color: #9b59b6;
+        }
+
+        button {
+            background-color: #9b59b6;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            margin: 4px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button:disabled {
+            background-color: #b0a0b0;
+            cursor: default;
+        }
+
+        label {
+            display: inline-block;
+            width: 140px;
+        }
+
+        .phone-code-area {
+            margin-top: 15px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        input,
+        select {
+            margin: 4px 0;
+            padding: 4px;
+        }
+
+        #frame_5 {
+            text-align: center;
+        }
+
+        #frame_5 img {
+            max-width: 90%;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <header></header>
+
+    <section id="loader">
+        <div>Загрузка сервиса...</div>
+        <div class="loader-bar">
+            <div id="loaderFill" class="loader-fill"></div>
+        </div>
+    </section>
+
+    <main id="page" class="invisible">
+        <div class="progress">
+            <div id="progressFill" class="progress-fill"></div>
+        </div>
+
+        <section id="frame_1">
+            <div>
+                <p>Добро пожаловать в <strong>Сервис</strong></p>
+                <small>Для продолжения нужно зарегистрироваться</small>
+                <div><button type="button" id="startRegBtn">Регистрация</button></div>
+            </div>
+        </section>
+
+        <section id="frame_2" class="invisible">
+            <h3>Шаг 1. Персональные данные</h3>
+            <div>
+                <div><label>Имя:</label> <input type="text" id="firstName" placeholder="Иван"></div>
+                <div><label>Фамилия:</label> <input type="text" id="lastName" placeholder="Иванов"></div>
+                <div><label>Электронная почта:</label> <input type="email" id="email" placeholder="user@example.com">
+                </div>
+                <div><label>Страна:</label> <select id="country"></select></div>
+                <div><label>Адрес:</label> <input type="text" id="address" placeholder="Город, улица, дом"></div>
+                <div><label>Пароль:</label> <input type="password" id="password"></div>
+                <div><label>Повторите пароль:</label> <input type="password" id="password2"></div>
+                <div>
+                    <button type="button" id="cancelStep1">Отмена</button>
+                    <button type="button" id="nextStep1" disabled>Далее</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="frame_3" class="invisible">
+            <h3>Шаг 2. Телефонный номер</h3>
+            <p>В целях безопасности Сервису нужно подтверждение вашего телефонного номера. На него будет отправлен
+                4-значный код подтверждения.</p>
+            <div>
+                <label>Телефон:</label>
+                <input type="text" id="phone" placeholder="+7 123 4567890">
+                <button type="button" id="sendCodeBtn">Отправить</button>
+            </div>
+            <div id="codeArea" class="phone-code-area hidden">
+                <label>Код подтверждения:</label>
+                <input type="text" id="smsCode" maxlength="4" placeholder="XXXX">
+                <button type="button" id="verifyCodeBtn">Проверить</button>
+            </div>
+            <div>
+                <button type="button" id="backStep2">Назад</button>
+                <button type="button" id="nextStep2" disabled>Далее</button>
+            </div>
+        </section>
+
+        <section id="frame_4" class="invisible">
+            <h3>Шаг 3. Метод оплаты</h3>
+            <p>Для совершения покупок в Сервисе необходимо подключить банковскую карту.</p>
+            <div>
+                <div><label>Номер карты:</label> <input type="text" id="cardNumber" placeholder="1111 2222 3333 4444">
+                </div>
+                <div><label>Срок действия:</label> <input type="text" id="cardExpiry" placeholder="MM/YY"></div>
+                <div><label>CVV:</label> <input type="text" id="cvv" placeholder="XXX"></div>
+                <div><label><input type="checkbox" id="agreeTerms"> Я согласен с условиями блаблабла</label></div>
+                <div>
+                    <button type="button" id="backStep3">Назад</button>
+                    <button type="button" id="finishReg">Завершить</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="frame_5" class="invisible">
+            <img src="frame5.png">
+        </section>
+    </main>
+
+    <script>
+        (function () {
+            let startTime = Date.now();
+            let fillDiv = document.getElementById('loaderFill');
+            let interval = setInterval(function () {
+                let elapsed = Date.now() - startTime;
+                let percent = Math.min(100, (elapsed / 2000) * 100);
+                fillDiv.style.width = percent + '%';
+                if (percent >= 100) {
+                    clearInterval(interval);
+                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('page').classList.remove('invisible');
+                }
+            }, 20);
+        })();
+    </script>
+
+    <script>
+        (function () {
+            const countries = [
+                "Россия", "США", "Канада", "Великобритания", "Германия",
+                "Франция", "Италия", "Испания", "Китай", "Япония",
+                "Бразилия", "Индия", "Австралия", "Мексика", "ЮАР"
+            ];
+            const countrySelect = document.getElementById('country');
+            if (countrySelect) {
+                countries.forEach(c => {
+                    let opt = document.createElement('option');
+                    opt.value = c;
+                    opt.textContent = c;
+                    countrySelect.appendChild(opt);
+                });
+            }
+
+            const frame1 = document.getElementById('frame_1');
+            const frame2 = document.getElementById('frame_2');
+            const frame3 = document.getElementById('frame_3');
+            const frame4 = document.getElementById('frame_4');
+            const frame5 = document.getElementById('frame_5');
+            const progressFill = document.getElementById('progressFill');
+
+            function showFrame(frame) {
+                const frames = [frame1, frame2, frame3, frame4, frame5];
+                frames.forEach(f => { if (f) f.classList.add('invisible'); });
+                frame.classList.remove('invisible');
+                if (frame === frame2) progressFill.style.width = '33%';
+                else if (frame === frame3) progressFill.style.width = '66%';
+                else if (frame === frame4) progressFill.style.width = '100%';
+                else if (frame === frame5) progressFill.style.width = '100%';
+                else progressFill.style.width = '0%';
+            }
+
+            document.getElementById('startRegBtn').onclick = () => showFrame(frame2);
+
+            const firstName = document.getElementById('firstName');
+            const lastName = document.getElementById('lastName');
+            const email = document.getElementById('email');
+            const country = document.getElementById('country');
+            const address = document.getElementById('address');
+            const password = document.getElementById('password');
+            const password2 = document.getElementById('password2');
+            const nextStep1 = document.getElementById('nextStep1');
+            const cancelStep1 = document.getElementById('cancelStep1');
+
+            function validateStep1() {
+                let allFilled = firstName.value.trim() !== '' &&
+                    lastName.value.trim() !== '' &&
+                    email.value.trim() !== '' &&
+                    country.value !== '' &&
+                    address.value.trim() !== '' &&
+                    password.value.trim() !== '' &&
+                    password2.value.trim() !== '';
+                let passwordsMatch = password.value === password2.value;
+                nextStep1.disabled = !(allFilled && passwordsMatch);
+            }
+            [firstName, lastName, email, country, address, password, password2].forEach(inp => {
+                inp.addEventListener('input', validateStep1);
+            });
+            validateStep1();
+
+            nextStep1.onclick = () => showFrame(frame3);
+            cancelStep1.onclick = () => showFrame(frame1);
+
+            const phoneInput = document.getElementById('phone');
+            const sendCodeBtn = document.getElementById('sendCodeBtn');
+            const codeArea = document.getElementById('codeArea');
+            const smsCodeInput = document.getElementById('smsCode');
+            const verifyCodeBtn = document.getElementById('verifyCodeBtn');
+            const nextStep2 = document.getElementById('nextStep2');
+            const backStep2 = document.getElementById('backStep2');
+
+            let phoneValid = false;
+            let codeValid = false;
+
+            function checkNextStep2() {
+                nextStep2.disabled = !(phoneValid && codeValid);
+            }
+
+            sendCodeBtn.onclick = () => {
+                let phone = phoneInput.value.trim();
+                let digitCount = (phone.match(/\d/g) || []).length;
+                if (digitCount >= 5) {
+                    phoneValid = true;
+                    codeArea.classList.remove('hidden');
+                    alert('Код подтверждения отправлен (Введите любые 4 цифры).');
+                } else {
+                    alert('Введите корректный номер телефона (не менее 5 цифр)');
+                    phoneValid = false;
+                    codeArea.classList.add('hidden');
+                }
+                checkNextStep2();
+            };
+
+            verifyCodeBtn.onclick = () => {
+                let code = smsCodeInput.value.trim();
+                if (/^\d{4}$/.test(code)) {
+                    codeValid = true;
+                    alert('Код подтверждён');
+                } else {
+                    codeValid = false;
+                    alert('Код должен состоять из 4 цифр');
+                }
+                checkNextStep2();
+            };
+
+            backStep2.onclick = () => showFrame(frame2);
+            nextStep2.onclick = () => showFrame(frame4);
+
+            const cardNumber = document.getElementById('cardNumber');
+            const cardExpiry = document.getElementById('cardExpiry');
+            const cvv = document.getElementById('cvv');
+            const agreeTerms = document.getElementById('agreeTerms');
+            const finishReg = document.getElementById('finishReg');
+            const backStep3 = document.getElementById('backStep3');
+
+            function validatePayment() {
+                let cardOk = cardNumber.value.trim().length > 10;
+                let expiryOk = /^\d{2}\/\d{2}$/.test(cardExpiry.value.trim());
+                let cvvOk = /^\d{3}$/.test(cvv.value.trim());
+                return cardOk && expiryOk && cvvOk && agreeTerms.checked;
+            }
+
+            function updateFinishButton() {
+                finishReg.disabled = !validatePayment();
+            }
+
+            [cardNumber, cardExpiry, cvv, agreeTerms].forEach(el => {
+                el.addEventListener('input', updateFinishButton);
+                if (el === agreeTerms) el.addEventListener('change', updateFinishButton);
+            });
+            updateFinishButton();
+
+            finishReg.onclick = () => {
+                if (validatePayment()) {
+                    showFrame(frame5);
+                } else {
+                    alert('Заполните все поля карты корректно (номер, срок MM/YY, CVV 3 цифры, примите условия)');
+                }
+            };
+            backStep3.onclick = () => showFrame(frame3);
+        })();
+    </script>
+</body>
+
+</html>
