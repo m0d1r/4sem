@@ -1,0 +1,12 @@
+epic_free_bot/
+│
+├── .env                 
+├── .gitignore              
+├── config.py                # загрузка переменных из .env
+├── bot.py                   # основной файл с обработчиками команд
+├── epic_api.py              # получение текущих и будущих раздач из Epic Games
+├── rawg_api.py              # поиск информации об играх через RAWG API
+├── scraper.py               # парсинг системных требований из PCGamingWiki
+├── logger.py                # логирование действий пользователя в файлы .log
+│
+└── logs/                    # {user_id}.log
